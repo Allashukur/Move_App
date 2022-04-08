@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <fragment
+        android:id="@+id/nav_controller_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_group" />
+
+
+    <me.ibrahimsn.lib.SmoothBottomBar
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:backgroundColor="#FFF"
+        app:iconSize="23dp"
+        app:iconTint="#B3B3B3"
+        app:iconTintActive="@color/black"
+        app:indicatorColor="#F3F5F7"
+        app:indicatorRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu"
+        app:textColor="@color/black"
+        app:textSize="14sp" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
