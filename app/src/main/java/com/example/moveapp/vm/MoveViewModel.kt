@@ -52,7 +52,7 @@ class MoveViewModel(
                             list2.add(
                                 MoveNewPlayingEntity(
                                     it.id,
-                                    it.original_title,
+                                    it.title,
                                     it.overview,
                                     "https://image.tmdb.org/t/p/w500/" + it.poster_path,
                                     it.release_date,
