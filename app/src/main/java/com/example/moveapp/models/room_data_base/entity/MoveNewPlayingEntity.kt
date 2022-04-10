@@ -2,6 +2,7 @@ package com.example.moveapp.models.room_data_base.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
 data class MoveNewPlayingEntity(
@@ -12,8 +13,7 @@ data class MoveNewPlayingEntity(
     var image_url: String,
     var release_date: String,
     var rank: String,
-    var original_language: String,
     var favrorite: Boolean
-) {
+) : Serializable {
 
 }

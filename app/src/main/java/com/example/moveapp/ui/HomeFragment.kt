@@ -85,7 +85,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             bundle.putInt("id_move_playing", it)
             findNavController().navigate(R.id.infoPageFragment, bundle)
         }
-        binding.viewPager2.adapter = adapterViewPager
         binding.apply {
             viewPager2.clipToPadding = false
             viewPager2.clipChildren = false
@@ -101,6 +100,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
         })
+        binding.viewPager2.adapter = adapterViewPager
         binding.homeRv.adapter = adaterRv
         binding.viewPager2.setPageTransformer(compositePageTransformer)
     }

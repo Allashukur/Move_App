@@ -7,8 +7,8 @@ import com.example.moveapp.models.room_data_base.entity.MovePopularEntity
 @Dao
 interface Move_dao {
 
-//    @Insert
-//    suspend fun addMoveData(movePopular: MovePopularEntity)
+    @Insert
+    suspend fun addMoveDataPopular(movePopular: MovePopularEntity)
 
     @Query("select * from movepopularentity")
     suspend fun getMoveData(): List<MovePopularEntity>
@@ -17,7 +17,7 @@ interface Move_dao {
     suspend fun addMovePopularList(movePopular: List<MovePopularEntity>)
 
     @Query("select * from movepopularentity where id = :id_move")
-    suspend fun getMovePopularId(id_move: Int): MovePopularEntity
+    fun getMovePopularId(id_move: Int): MovePopularEntity
 
     @Update
     fun editMovePopular(movePopularEntity: MovePopularEntity)
@@ -25,6 +25,11 @@ interface Move_dao {
     @Query("select * from movenewplayingentity")
     suspend fun getMoveNewPlaying(): List<MoveNewPlayingEntity>
 
+    @Query("select * from movepopularentity where favrorite = :fav")
+    suspend fun getMovePopularFav(fav: Boolean): List<MovePopularEntity>
+
+    @Insert
+    suspend fun addNewMove(moveNewPlayingEntity: MoveNewPlayingEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNewPlaying(moveNewPlayingEntity: List<MoveNewPlayingEntity>)
@@ -33,5 +38,9 @@ interface Move_dao {
     fun editNewPlaying(moveNewPlayingEntity: MoveNewPlayingEntity)
 
     @Query("select * from movenewplayingentity where id = :id_move_new")
-    suspend fun getMoveNewPlayingId(id_move_new: Int): MoveNewPlayingEntity
+    fun getMoveNewPlayingId(id_move_new: Int): MoveNewPlayingEntity
+
+
+    @Query("select * from movenewplayingentity where favrorite = :fav")
+    suspend fun getNewMovePlayingFav(fav: Boolean): List<MoveNewPlayingEntity>
 }

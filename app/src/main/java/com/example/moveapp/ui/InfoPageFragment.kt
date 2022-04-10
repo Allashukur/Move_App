@@ -13,6 +13,8 @@ import com.example.moveapp.MainActivity
 import com.example.moveapp.R
 import com.example.moveapp.databinding.FragmentInfoPageBinding
 import com.example.moveapp.models.room_data_base.app_data_base.AppDatabase
+import com.example.moveapp.models.room_data_base.entity.MoveNewPlayingEntity
+import com.example.moveapp.models.room_data_base.entity.MovePopularEntity
 import com.squareup.picasso.Picasso
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import kotlinx.coroutines.CoroutineScope
@@ -44,9 +46,11 @@ class InfoPageFragment : Fragment(R.layout.fragment_info_page), CoroutineScope {
 
         val data = arguments?.getInt("id_move_popular")
         val data2 = arguments?.getInt("id_move_playing")
+        val serializable = arguments?.getSerializable("favrorit")
 
         launch {
             val movePopular = data?.let { appDatabase.moveDao().getMovePopularId(it) }
+
             if (movePopular != null) {
                 setData(
                     movePopular.image_url,
@@ -56,24 +60,20 @@ class InfoPageFragment : Fragment(R.layout.fragment_info_page), CoroutineScope {
                     movePopular.rank,
                     movePopular.favrorite
                 )
-                binding.apply {
-                    favrorit.setOnClickListener {
-                        if (movePopular.favrorite == true) {
-                            movePopular.favrorite = false
-                            favrorit.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
-//                            movePopular.let { appDatabase.moveDao().editMovePopular(it) }
-                        } else {
-                            movePopular.favrorite = true
-                            favrorit.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                        }
-                        movePopular.let { appDatabase.moveDao().editMovePopular(it) }
-                        Log.d("moveApp", "$movePopular")
+                binding.favrorit.setOnClickListener {
+                    if (movePopular.favrorite == true) {
+                        movePopular.favrorite = false
+                        binding.favrorit.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
+                    } else {
+                        movePopular.favrorite = true
+                        binding.favrorit.setImageResource(R.drawable.ic_baseline_bookmark_24)
                     }
+                    movePopular.let { appDatabase.moveDao().editMovePopular(it) }
+                    Log.d("moveApp", "${movePopular.favrorite}")
+
                 }
             }
 
-        }
-        launch {
             val moveNewPlayingId = data2?.let { appDatabase.moveDao().getMoveNewPlayingId(it) }
             if (moveNewPlayingId != null) {
                 setData(
@@ -88,14 +88,64 @@ class InfoPageFragment : Fragment(R.layout.fragment_info_page), CoroutineScope {
                     favrorit.setOnClickListener {
                         if (moveNewPlayingId.favrorite == true) {
                             moveNewPlayingId.favrorite = false
+//                            appDatabase.moveDao().editNewPlaying(moveNewPlayingId)
                             favrorit.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
                         } else {
                             moveNewPlayingId.favrorite = true
+//                            appDatabase.moveDao().editNewPlaying(moveNewPlayingId)
                             favrorit.setImageResource(R.drawable.ic_baseline_bookmark_24)
                         }
                         moveNewPlayingId.let { appDatabase.moveDao().editNewPlaying(it) }
                     }
                 }
+            }
+
+            if (serializable != null) {
+                val data = serializable as MoveNewPlayingEntity
+                setData(
+                    data.image_url,
+                    data.title,
+                    data.description,
+                    data.release_date,
+                    data.rank,
+                    data.favrorite
+                )
+                binding.favrorit.setOnClickListener {
+                    if (data.favrorite == true) {
+                        data.favrorite = false
+                        binding.favrorit.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
+                    } else {
+                        data.favrorite = true
+                        binding.favrorit.setImageResource(R.drawable.ic_baseline_bookmark_24)
+                    }
+
+
+                    val movePopularId = appDatabase.moveDao().getMovePopularId(data.id)
+                    val moveNewPlayingId1 =
+                        appDatabase.moveDao().getMoveNewPlayingId(data.id)
+
+
+                    if (movePopularId != null) {
+                        appDatabase.moveDao().editMovePopular(
+                            MovePopularEntity(
+                                data.id,
+                                data.title,
+                                data.image_url,
+                                data.description,
+                                data.release_date,
+                                data.rank,
+                                data.favrorite
+                            )
+                        )
+
+                    } else if (moveNewPlayingId1 != null) {
+                        appDatabase.moveDao().editNewPlaying(data)
+                    }
+
+//                        moveNewPlayingId.let { appDatabase.moveDao().editNewPlaying(it) }
+                }
+
+
             }
 
         }
