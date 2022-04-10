@@ -9,7 +9,7 @@ import com.example.moveapp.models.room_data_base.entity.MoveNewPlayingEntity
 import com.example.moveapp.models.room_data_base.entity.MovePopularEntity
 import com.squareup.picasso.Picasso
 
-class AdapterHomeRv(var list: List<MoveNewPlayingEntity>) :
+class AdapterHomeRv(var list: List<MoveNewPlayingEntity>, val itemClickListener: (Int) -> Unit) :
     RecyclerView.Adapter<AdapterHomeRv.ViewHolder>() {
 
     inner class ViewHolder(val homeItemBinding: ItemHomeRvBinding) :
@@ -36,6 +36,10 @@ class AdapterHomeRv(var list: List<MoveNewPlayingEntity>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.onBind(list.get(position))
+
+        holder.itemView.setOnClickListener {
+            itemClickListener.invoke(list.get(position).id)
+        }
     }
 
     override fun getItemCount(): Int = list.size

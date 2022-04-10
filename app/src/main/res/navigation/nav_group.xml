@@ -9,15 +9,32 @@
         android:id="@+id/home"
         android:name="com.example.moveapp.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_infoPageFragment"
+            app:destination="@id/infoPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favrorit"
         android:name="com.example.moveapp.ui.favouriteFragment"
         android:label="fragment_favourite"
-        tools:layout="@layout/fragment_favourite" />
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_favrorit_to_infoPageFragment"
+            app:destination="@id/infoPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/top_move"
         android:name="com.example.moveapp.ui.TopMoveFragment"
         android:label="fragment_top_move"
-        tools:layout="@layout/fragment_top_move" />
+        tools:layout="@layout/fragment_top_move" >
+        <action
+            android:id="@+id/action_top_move_to_infoPageFragment"
+            app:destination="@id/infoPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/infoPageFragment"
+        android:name="com.example.moveapp.ui.InfoPageFragment"
+        android:label="fragment_info_page"
+        tools:layout="@layout/fragment_info_page" />
 </navigation>

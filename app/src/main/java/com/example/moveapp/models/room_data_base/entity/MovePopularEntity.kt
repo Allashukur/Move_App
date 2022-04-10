@@ -11,7 +11,8 @@ data class MovePopularEntity(
     val image_url: String,
     val description: String,
     val release_date: String,
-    val rank: String
+    val rank: String,
+    var favrorite: Boolean
 ) {
 
 }

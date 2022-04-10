@@ -1,9 +1,6 @@
 package com.example.moveapp.models.room_data_base.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.moveapp.models.room_data_base.entity.MoveNewPlayingEntity
 import com.example.moveapp.models.room_data_base.entity.MovePopularEntity
 
@@ -19,8 +16,22 @@ interface Move_dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMovePopularList(movePopular: List<MovePopularEntity>)
 
+    @Query("select * from movepopularentity where id = :id_move")
+    suspend fun getMovePopularId(id_move: Int): MovePopularEntity
+
+    @Update
+    fun editMovePopular(movePopularEntity: MovePopularEntity)
+
+    @Query("select * from movenewplayingentity")
+    suspend fun getMoveNewPlaying(): List<MoveNewPlayingEntity>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNewPlaying(moveNewPlayingEntity: List<MoveNewPlayingEntity>)
 
+    @Update
+    fun editNewPlaying(moveNewPlayingEntity: MoveNewPlayingEntity)
+
+    @Query("select * from movenewplayingentity where id = :id_move_new")
+    suspend fun getMoveNewPlayingId(id_move_new: Int): MoveNewPlayingEntity
 }

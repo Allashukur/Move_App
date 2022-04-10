@@ -12,7 +12,8 @@ data class MoveNewPlayingEntity(
     var image_url: String,
     var release_date: String,
     var rank: String,
-    var original_language: String
+    var original_language: String,
+    var favrorite: Boolean
 ) {
 
 }

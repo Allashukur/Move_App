@@ -3,14 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/buy_ticket.xml" value="0.1485" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.154" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/ic_baseline_bookmark_border_24.xml" value="0.181" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/ic_baseline_chevron_left_24.xml" value="0.154" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/ic_baseline_movie_filter_24.xml" value="0.233" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/ic_baseline_star_border_24.xml" value="0.1" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/info_fragment_bacground.xml" value="0.111" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/info_fragment_background.xml" value="0.147" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/info_shadow.xml" value="0.154" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/info_shadow2.xml" value="0.147" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/drawable/progress_background.xml" value="0.129" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/fragment_favourite.xml" value="0.24635416666666668" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/fragment_home_page_item.xml" value="0.35572916666666665" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/fragment_info_page.xml" value="0.264" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/fragment_top_move.xml" value="0.24635416666666668" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/home_item.xml" value="0.264" />
+        <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/item_favrorite.xml" value="0.24895833333333334" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/layout/item_home_rv.xml" value="0.24205128205128204" />
         <entry key="..\:/Android_studio/MVVM/Move App/app/src/main/res/menu/menu.xml" value="0.25" />
       </map>

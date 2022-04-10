@@ -18,7 +18,7 @@ import java.lang.Exception
 class MoveViewModel(
     apiServis: ApiServis,
     private val networkHelper: NetworkHelper,
-    appDatabase: AppDatabase
+    private val appDatabase: AppDatabase
 ) : ViewModel() {
 
     private val moveRepository = MoveRepository(apiServis, appDatabase)
@@ -44,7 +44,8 @@ class MoveViewModel(
                                     "https://image.tmdb.org/t/p/w500/" + it.poster_path,
                                     it.overview,
                                     it.release_date,
-                                    it.vote_average.toString()
+                                    it.vote_average.toString(),
+                                    false
                                 )
                             )
                         }
@@ -57,7 +58,8 @@ class MoveViewModel(
                                     "https://image.tmdb.org/t/p/w500/" + it.poster_path,
                                     it.release_date,
                                     it.vote_average.toString(),
-                                    it.original_language
+                                    it.original_language,
+                                    false
                                 )
                             )
                         }
@@ -68,6 +70,13 @@ class MoveViewModel(
                     } else {
                         flow.emit(MoveResource.Error(response.await().errorBody().toString()))
                     }
+                } else {
+                    flow.emit(
+                        MoveResource.Succes(
+                            appDatabase.moveDao().getMoveData(),
+                            appDatabase.moveDao().getMoveNewPlaying()
+                        )
+                    )
                 }
 
             } catch (e: Exception) {

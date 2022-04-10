@@ -2,6 +2,7 @@ package com.example.moveapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.PopupMenu
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -33,5 +34,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    fun viewGone() {
+        binding.bottomNavigation.visibility = View.GONE
+    }
+
+    fun viewVisiblite() {
+        binding.bottomNavigation.visibility = View.VISIBLE
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 }

@@ -7,11 +7,13 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.example.moveapp.MainActivity
 import com.example.moveapp.R
 import com.example.moveapp.adapter.AdapterHomeRv
 import com.example.moveapp.adapter.HomeViewSilderAdapter
@@ -73,8 +75,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setDataView(list: List<MovePopularEntity>, list2: List<MoveNewPlayingEntity>) {
-        adapterViewPager = HomeViewSilderAdapter(list)
-        adaterRv = AdapterHomeRv(list2)
+        adapterViewPager = HomeViewSilderAdapter(list) {
+            val bundle = Bundle()
+            bundle.putInt("id_move_popular", it)
+            findNavController().navigate(R.id.infoPageFragment, bundle)
+        }
+        adaterRv = AdapterHomeRv(list2) {
+            val bundle = Bundle()
+            bundle.putInt("id_move_playing", it)
+            findNavController().navigate(R.id.infoPageFragment, bundle)
+        }
         binding.viewPager2.adapter = adapterViewPager
         binding.apply {
             viewPager2.clipToPadding = false
@@ -93,6 +103,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
         binding.homeRv.adapter = adaterRv
         binding.viewPager2.setPageTransformer(compositePageTransformer)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val mainActivity = activity as MainActivity
+        mainActivity.viewVisiblite()
     }
 
 }

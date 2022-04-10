@@ -9,6 +9,7 @@
 
 
     <androidx.appcompat.widget.Toolbar
+        android:layout_marginTop="27dp"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
 
@@ -69,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:text="Top Films"
+                android:text="New Films"
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 android:textStyle="bold" />
