@@ -2,13 +2,12 @@ package com.example.moveapp.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -29,6 +28,7 @@ import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.mobiler.mvvmg23.utils.NetworkHelper
+
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val binding by viewBinding(FragmentHomeBinding::bind)
@@ -75,15 +75,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setDataView(list: List<MovePopularEntity>, list2: List<MoveNewPlayingEntity>) {
+
+        val navOptions: NavOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.enter)
+            .setExitAnim(R.anim.exit)
+            .setPopEnterAnim(R.anim.pop_enter)
+            .setPopExitAnim(R.anim.pop_exit)
+            .build()
+
         adapterViewPager = HomeViewSilderAdapter(list) {
             val bundle = Bundle()
             bundle.putInt("id_move_popular", it)
-            findNavController().navigate(R.id.infoPageFragment, bundle)
+            findNavController().navigate(R.id.infoPageFragment, bundle, navOptions)
         }
         adaterRv = AdapterHomeRv(list2) {
             val bundle = Bundle()
             bundle.putInt("id_move_playing", it)
-            findNavController().navigate(R.id.infoPageFragment, bundle)
+            findNavController().navigate(R.id.infoPageFragment, bundle, navOptions)
         }
         binding.apply {
             viewPager2.clipToPadding = false
