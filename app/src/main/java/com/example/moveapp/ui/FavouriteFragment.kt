@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.moveapp.MainActivity
 import com.example.moveapp.R
@@ -37,9 +38,18 @@ class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope 
         super.onViewCreated(view, savedInstanceState)
         loadData()
 
+
     }
 
     private fun loadData() {
+
+        val navOptions: NavOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.enter)
+            .setExitAnim(R.anim.exit)
+            .setPopEnterAnim(R.anim.pop_enter)
+            .setPopExitAnim(R.anim.pop_exit)
+            .build()
+
         var list = ArrayList<MoveNewPlayingEntity>()
         appDatabase = AppDatabase.getInstance(requireContext())
         job = Job()
@@ -65,7 +75,7 @@ class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope 
             adapter = AdapterFavRv(list) {
                 val bundle = Bundle()
                 bundle.putSerializable("favrorit", it)
-                findNavController().navigate(R.id.infoPageFragment, bundle)
+                findNavController().navigate(R.id.infoPageFragment, bundle, navOptions)
             }
             binding.rv.adapter = adapter
         }

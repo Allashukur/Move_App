@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.moveapp.MainActivity
 import com.example.moveapp.R
@@ -43,13 +44,20 @@ class TopMoveFragment : Fragment(R.layout.fragment_top_move), CoroutineScope {
 
     private fun setDataView() {
 
+        val navOptions: NavOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.enter)
+            .setExitAnim(R.anim.exit)
+            .setPopEnterAnim(R.anim.pop_enter)
+            .setPopExitAnim(R.anim.pop_exit)
+            .build()
+
         launch {
             adapterFavRv = AdapterFavRv(
                 appDatabase.moveDao().getMoveNewPlaying() as ArrayList<MoveNewPlayingEntity>
             ) {
                 val bundle = Bundle()
                 bundle.putInt("id_move_playing", it.id)
-                findNavController().navigate(R.id.infoPageFragment, bundle)
+                findNavController().navigate(R.id.infoPageFragment, bundle, navOptions)
             }
             binding.rv.adapter = adapterFavRv
 

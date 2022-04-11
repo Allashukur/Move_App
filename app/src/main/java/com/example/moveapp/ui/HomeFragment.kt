@@ -3,6 +3,7 @@ package com.example.moveapp.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils.loadAnimation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +25,7 @@ import com.example.moveapp.models.room_data_base.entity.MovePopularEntity
 import com.example.moveapp.resource.MoveResource
 import com.example.moveapp.vm.MoveViewModel
 import com.example.moveapp.vm.MoveViewModelFactory
+import com.google.android.material.animation.AnimationUtils
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -75,6 +77,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setDataView(list: List<MovePopularEntity>, list2: List<MoveNewPlayingEntity>) {
+
 
         val navOptions: NavOptions = NavOptions.Builder()
             .setEnterAnim(R.anim.enter)

@@ -2,7 +2,9 @@ package com.example.moveapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moveapp.R
 import com.example.moveapp.databinding.HomeItemBinding
 import com.example.moveapp.models.room_data_base.entity.MovePopularEntity
 import com.squareup.picasso.Picasso
@@ -17,7 +19,7 @@ class HomeViewSilderAdapter(
         RecyclerView.ViewHolder(homeItemBinding.root) {
 
         fun onBind(movePopularEntity: MovePopularEntity) {
-            Picasso.get().load(movePopularEntity.image_url).into(homeItemBinding.imageItem)
+            Picasso.get().load(movePopularEntity.image_url).error(R.drawable.not_load_image).into(homeItemBinding.imageItem)
             homeItemBinding.apply {
                 tagStateDescription.setText(movePopularEntity.description)
                 moveTitle.setText(movePopularEntity.title)
@@ -40,6 +42,11 @@ class HomeViewSilderAdapter(
         holder.itemView.setOnClickListener {
             viewSliderItemListener.invoke(list.get(position).id)
         }
+        val animationFadeIn = AnimationUtils.loadAnimation(
+            holder.homeItemBinding.root.context,
+            R.anim.alpha
+        )
+        holder.itemView.startAnimation(animationFadeIn)
     }
 
     override fun getItemCount(): Int = list.size
