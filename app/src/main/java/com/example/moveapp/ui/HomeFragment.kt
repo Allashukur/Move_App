@@ -3,7 +3,7 @@ package com.example.moveapp.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils.loadAnimation
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,11 +25,12 @@ import com.example.moveapp.models.room_data_base.entity.MovePopularEntity
 import com.example.moveapp.resource.MoveResource
 import com.example.moveapp.vm.MoveViewModel
 import com.example.moveapp.vm.MoveViewModelFactory
-import com.google.android.material.animation.AnimationUtils
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.mobiler.mvvmg23.utils.NetworkHelper
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -40,6 +41,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var appDatabase: AppDatabase
     private lateinit var adapterViewPager: HomeViewSilderAdapter
     private lateinit var adaterRv: AdapterHomeRv
+    private var tempList = ArrayList<MovePopularEntity>()
+    private var newList = ArrayList<MovePopularEntity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,29 +58,84 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        serchView()
+
         lifecycleScope.launch {
             moveViewModel.getMove().collect {
                 when (it) {
                     is MoveResource.Error -> {
-                        Log.d("MOVE_APP", "${it.message}")
                     }
                     MoveResource.Loading -> {
-                        Log.d("MOVE_APP", "${it}")
+
+                        binding.progress.visibility = View.VISIBLE
                     }
                     is MoveResource.Succes -> {
+                        binding.progress.visibility = View.GONE
                         setDataView(it.list, it.list2)
-                        Log.d("MOVE_APP", "${it}")
                     }
                 }
             }
 
         }
 
+    }
+
+    private fun serchView() {
+        binding.toolbarLayout.apply {
+            search.setOnSearchClickListener {
+                titleToolbar.visibility = View.GONE
+            }
+
+            search.setOnCloseListener(object :
+                android.widget.SearchView.OnCloseListener,
+                SearchView.OnCloseListener {
+                override fun onClose(): Boolean {
+
+                    titleToolbar.visibility = View.VISIBLE
+                    return false
+                }
+
+            })
+
+            search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+
+                    tempList.clear()
+
+                    val searchText = newText?.lowercase(Locale.getDefault())
+                    if (searchText != null && searchText.isNotEmpty()) {
+                        Log.d("moveApp", "${newList}")
+                        newList.forEach {
+                            if (it.title.lowercase(Locale.getDefault()).contains(searchText)) {
+                                tempList.add(it)
+                            }
+                        }
+                        binding.viewPager2.adapter?.notifyDataSetChanged()
+                    } else {
+                        tempList.clear()
+                        tempList.addAll(newList)
+                        binding.viewPager2.adapter?.notifyDataSetChanged()
+                    }
+//                    binding.viewPager2.adapter?.notifyDataSetChanged()
+                    return false
+                }
+
+            })
+
+        }
 
     }
 
     private fun setDataView(list: List<MovePopularEntity>, list2: List<MoveNewPlayingEntity>) {
 
+        tempList = list as ArrayList<MovePopularEntity>
+        newList.addAll(list)
 
         val navOptions: NavOptions = NavOptions.Builder()
             .setEnterAnim(R.anim.enter)
@@ -86,7 +144,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .setPopExitAnim(R.anim.pop_exit)
             .build()
 
-        adapterViewPager = HomeViewSilderAdapter(list) {
+        adapterViewPager = HomeViewSilderAdapter(tempList) {
             val bundle = Bundle()
             bundle.putInt("id_move_popular", it)
             findNavController().navigate(R.id.infoPageFragment, bundle, navOptions)
@@ -118,6 +176,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onStart() {
         super.onStart()
+        binding.toolbarLayout.apply {
+            search.isIconified = true
+            search.onActionViewCollapsed()
+        }
         val mainActivity = activity as MainActivity
         mainActivity.viewVisiblite()
     }

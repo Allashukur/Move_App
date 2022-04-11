@@ -153,6 +153,7 @@ class InfoPageFragment : Fragment(R.layout.fragment_info_page), CoroutineScope {
 
     }
 
+
     private fun setData(
         imageUrl: String,
         toolbarTitle: String,

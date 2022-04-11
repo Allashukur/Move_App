@@ -38,8 +38,6 @@ class MoveViewModel(
                     val response2 = async { moveRepository.getNewMovePlaying() }
 
                     if (response.await().isSuccessful && response2.await().isSuccessful) {
-                        val list = ArrayList<MovePopularEntity>()
-                        val list2 = ArrayList<MoveNewPlayingEntity>()
 
                         loadDataBase(
                             response.await().body()?.results as ArrayList<Result>,
@@ -47,17 +45,21 @@ class MoveViewModel(
                                 .body()?.results as ArrayList<com.example.moveapp.models.retrofit.model_now_playing.Result>
                         )
 
-//                        flow.emit(MoveResource.Succes(list, list2))
                     } else {
                         flow.emit(MoveResource.Error(response.await().errorBody().toString()))
                     }
                 } else {
-                    flow.emit(
-                        MoveResource.Succes(
-                            appDatabase.moveDao().getMoveData(),
-                            appDatabase.moveDao().getMoveNewPlaying()
+                    val moveNewPlaying = appDatabase.moveDao().getMoveNewPlaying()
+                    if (moveNewPlaying.isEmpty()) {
+                        flow.emit(MoveResource.Loading)
+                    } else {
+                        flow.emit(
+                            MoveResource.Succes(
+                                appDatabase.moveDao().getMoveData(),
+                                appDatabase.moveDao().getMoveNewPlaying()
+                            )
                         )
-                    )
+                    }
                 }
 
             } catch (e: Exception) {

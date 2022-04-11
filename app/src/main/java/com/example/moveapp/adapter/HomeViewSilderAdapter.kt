@@ -42,11 +42,11 @@ class HomeViewSilderAdapter(
         holder.itemView.setOnClickListener {
             viewSliderItemListener.invoke(list.get(position).id)
         }
-        val animationFadeIn = AnimationUtils.loadAnimation(
-            holder.homeItemBinding.root.context,
-            R.anim.alpha
-        )
-        holder.itemView.startAnimation(animationFadeIn)
+//        val animationFadeIn = AnimationUtils.loadAnimation(
+//            holder.homeItemBinding.root.context,
+//            R.anim.alpha
+//        )
+//        holder.itemView.startAnimation(animationFadeIn)
     }
 
     override fun getItemCount(): Int = list.size

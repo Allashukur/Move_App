@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.moveapp.MainActivity
@@ -20,6 +21,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope {
@@ -28,6 +31,8 @@ class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope 
     private lateinit var job: Job
     private lateinit var adapter: AdapterFavRv
     private lateinit var appDatabase: AppDatabase
+    private var tempList = ArrayList<MoveNewPlayingEntity>()
+    private var newList = ArrayList<MoveNewPlayingEntity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +41,57 @@ class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        serchView()
         loadData()
 
+
+    }
+
+    private fun serchView() {
+        binding.toolbarLayout.apply {
+
+            search.setOnSearchClickListener {
+                titleToolbar.visibility = View.GONE
+            }
+
+            search.setOnCloseListener(object :
+                android.widget.SearchView.OnCloseListener,
+                SearchView.OnCloseListener {
+                override fun onClose(): Boolean {
+
+                    titleToolbar.visibility = View.VISIBLE
+                    return false
+                }
+
+            })
+
+            search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    tempList.clear()
+
+                    val searchText = newText?.lowercase(Locale.getDefault())
+                    if (searchText != null && searchText.isNotEmpty()) {
+                        newList.forEach {
+                            if (it.title.lowercase(Locale.getDefault()).contains(searchText)) {
+                                tempList.add(it)
+                            }
+                        }
+                        binding.rv.adapter?.notifyDataSetChanged()
+                    } else {
+                        tempList.clear()
+                        tempList.addAll(newList)
+                        binding.rv.adapter?.notifyDataSetChanged()
+                    }
+                    return false
+                }
+
+            })
+        }
 
     }
 
@@ -50,17 +104,16 @@ class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope 
             .setPopExitAnim(R.anim.pop_exit)
             .build()
 
-        var list = ArrayList<MoveNewPlayingEntity>()
         appDatabase = AppDatabase.getInstance(requireContext())
         job = Job()
 
         launch {
-            list =
+            tempList =
                 appDatabase.moveDao().getNewMovePlayingFav(true) as ArrayList<MoveNewPlayingEntity>
             val movePopularFav = appDatabase.moveDao().getMovePopularFav(true)
 
             movePopularFav.forEach {
-                list.add(
+                tempList.add(
                     MoveNewPlayingEntity(
                         it.id,
                         it.title,
@@ -71,11 +124,16 @@ class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope 
                     )
                 )
             }
+            newList.clear()
+            newList.addAll(tempList)
 
-            adapter = AdapterFavRv(list) {
+            adapter = AdapterFavRv(tempList) {
                 val bundle = Bundle()
                 bundle.putSerializable("favrorit", it)
                 findNavController().navigate(R.id.infoPageFragment, bundle, navOptions)
+            }
+            if (newList.isEmpty()) {
+                binding.notData.visibility = View.VISIBLE
             }
             binding.rv.adapter = adapter
         }
@@ -87,6 +145,10 @@ class favouriteFragment : Fragment(R.layout.fragment_favourite), CoroutineScope 
 
     override fun onStart() {
         super.onStart()
+        binding.toolbarLayout.apply {
+            search.isIconified = true
+            search.onActionViewCollapsed()
+        }
         val mainActivity = activity as MainActivity
         mainActivity.viewVisiblite()
     }
